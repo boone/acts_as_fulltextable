@@ -1,0 +1,7 @@
+mysql:
+  adapter: mysql
+  username: root
+  password: root
+  encoding: utf8
+  database: aaf_unittest
+  
