@@ -34,4 +34,31 @@ class ActsAsFulltextableTest2 < ActiveRecordTestCase
     assert_send [results, :include?, widgets(:two)]
   end
 
+  def test_active_content_marked_inactive
+    widget = widgets(:one)
+    results = Widget.find_fulltext('initial')
+    assert_equal 1, results.size
+    assert_equal widget, results.first
+    
+    widget.active = false
+    widget.save!
+    
+    results = Widget.find_fulltext('initial')
+    assert_equal 0, results.size
+  end
+
+  def test_inactive_content_marked_active
+    widget = widgets(:inactive)
+    results = Widget.find_fulltext('inactive')
+    assert_equal 0, results.size
+    
+    widget.active = true
+    widget.save!
+    
+    results = Widget.find_fulltext('inactive')
+    assert_equal 1, results.size
+    assert_equal widget, results.first
+  end
+
+
 end

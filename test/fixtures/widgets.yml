@@ -1,6 +1,6 @@
 one:
   id: 1
-  title: First widget
+  title: Initial widget
   content: This is the content.
   unindexed_content: Unfindable
   active: true
