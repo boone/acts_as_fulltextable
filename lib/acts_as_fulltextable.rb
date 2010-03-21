@@ -1,12 +1,18 @@
 # ActsAsFulltextable
 #
 # 2008-03-07
-# Patched by Artūras Šlajus <x11@arturaz.net> for will_paginate support
+#   Patched by Artūras Šlajus <x11@arturaz.net> for will_paginate support
+# 2008-06-19
+#   Artūras Šlajus <x11@arturaz.net>
+#
+#   Fixed a bug (thanks John!) where per_page was taken from FulltextRow 
+#   model and not from model search was based upon.
 # 2008-06-21
 #   John Lane (www.starfry.com)
 #
 #   Added support for conditions to determine which records are included in the
 #   full text search. The condition is applied to a record on each update.
+
 require "fulltext_row"
 
 module ActsAsFulltextable
@@ -56,6 +62,8 @@ module ActsAsFulltextable
         options = {:limit => 10, :offset => 0}.merge(options)
       end
       options[:only] = self.to_s.underscore.to_sym # Only look for object belonging to this class
+      # Pass from what class search is invoked.
+      options[:search_class] = Kernel.const_get(self.to_s)
 
       FulltextRow.search(query, options)
     end

@@ -1,7 +1,9 @@
 # FulltextRow
 #
 # 2008-03-07
-# Patched by Artūras Šlajus <x11@arturaz.net> for will_paginate support
+#   Patched by Artūras Šlajus <x11@arturaz.net> for will_paginate support
+# 2008-06-19
+#   Fixed a bug, see acts_as_fulltextable.rb
 class FulltextRow < ActiveRecord::Base
   # If FULLTEXT_ROW_TABLE is set, use it as the table name
   begin
@@ -39,7 +41,9 @@ class FulltextRow < ActiveRecord::Base
     options[:only] = [options[:only]] unless options[:only].nil? || options[:only].is_a?(Array)
     options[:only] = options[:only].map {|o| o.to_s.camelize}.uniq.compact unless options[:only].nil?
 
-    rows = raw_search(query, options[:only], options[:limit], options[:offset], options[:parent_id], options[:page])
+    rows = raw_search(query, options[:only], options[:limit], 
+      options[:offset], options[:parent_id], options[:page], 
+      options[:search_class])
     if options[:active_record]
       types = {}
       rows.each {|r| types.include?(r.fulltextable_type) ? (types[r.fulltextable_type] << r.fulltextable_id) : (types[r.fulltextable_type] = [r.fulltextable_id])}
@@ -91,8 +95,9 @@ private
   # * offset: offset to apply to query. Defaults to 0.
   # * parent_id: limit query to record with passed parent_id. An Array of ids is fine.
   # * page: overrides limit and offset, only available with will_paginate.
+  # * search_class: from what class should we take .per_page? Only with will_paginate
   #
-  def self.raw_search(query, only, limit, offset, parent_id = nil, page = nil)
+  def self.raw_search(query, only, limit, offset, parent_id = nil, page = nil, search_class = nil)
     unless only.nil? || only.empty?
       only_condition = " AND fulltextable_type IN (#{only.map {|c| (/\A\w+\Z/ === c.to_s) ? "'#{c.to_s}'" : nil}.uniq.compact.join(',')})"
     else
@@ -143,7 +148,11 @@ private
     end
 
     if defined?(WillPaginate) && page
-      self.paginate(:all, search_options.merge(:page => page))
+      search_options = search_options.merge(:page => page)
+      unless search_class.nil?
+        search_options = search_options.merge(:per_page => search_class.per_page)
+      end
+      self.paginate(:all, search_options)
     else
       self.find(:all, search_options.merge(:limit => limit, :offset => offset))
     end
