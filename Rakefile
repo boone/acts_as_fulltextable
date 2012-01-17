@@ -7,7 +7,7 @@ task :default => :test
 
 desc 'Test the acts_as_fulltextable plugin.'
 Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
+  t.libs << 'test/lib'
   t.pattern = 'test/**/*_test.rb'
   t.verbose = true
 end
