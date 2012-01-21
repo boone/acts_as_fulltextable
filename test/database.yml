@@ -3,5 +3,5 @@ mysql:
   username: root
   password: root
   encoding: utf8
-  database: aaf_unittest
+  database: acts_as_fulltextable
   
