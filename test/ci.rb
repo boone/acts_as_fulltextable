@@ -13,7 +13,7 @@ def system(*args)
 end
 
 if ENV['TRAVIS']
-  system "mysql -e 'create database will_paginate;' >/dev/null"
+  system "mysql -e 'create database acts_as_fulltextable;' >/dev/null"
   abort "failed to create mysql database" unless $?.success?
 end
 
