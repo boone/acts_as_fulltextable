@@ -1,28 +1,27 @@
 ActsAsFulltextable
 ==================
 
+[![Build Status](https://secure.travis-ci.org/boone/acts_as_fulltextable.png)](http://travis-ci.org/boone/acts_as_fulltextable)
+
 It allows you to create an auxiliary to be used for full-text searches.
 It behaves like a polymorphic association, so it can be used with any
 ActiveRecord model.
 
-See http://blog.wonsys.net/posts/26-our-first-plugin-acts_as_fulltextable/ and
-http://code.google.com/p/wonsys/
+This plugin is compatible with MySQL only.
 
-Bug tracker: http://wonsysos.16bugs.com/
+The code is based on the original acts_as_fulltextable plugin: http://code.google.com/p/wonsys/
 
-Only tested with MySQL 5.x
-
-== Step 1
+## Step 1
 
 Install the plugin:
-  script/plugin install http://wonsys.googlecode.com/svn/plugins/acts_as_fulltextable/
+  script/plugin install https://boone@github.com/boone/acts_as_fulltextable.git
 
-== Step 2
+## Step 2
 
 Add the following code to the model that should be included in searches:
   acts_as_fulltextable :fields, :to, :include, :in, :index
 
-== Step 3
+## Step 3
 
 Create the migration:
   script/generate fulltext_rows model1 model2 model3 ...
@@ -30,7 +29,7 @@ Create the migration:
 Then execute it:
   rake db:migrate
 
-== Run searches
+## Run searches
 
 You can either run a search on a single model:
   Model.find_fulltext('query to run', :limit => 10, :offset => 0)
@@ -38,7 +37,7 @@ You can either run a search on a single model:
 Or you can run it on more models at once:
   FulltextRow.search('query to run', :only => [:only, :this, :models], :limit => 10, :offset => 0)
 
-== Warning
+## Warning
 
 Should you add acts_as_fulltextable to a new model after the initial migration was run,
 you should execute the following piece of code (a migration or script/console are both fine):
@@ -47,7 +46,9 @@ you should execute the following piece of code (a migration or script/console ar
 
 It will add all of the model's instances to the index.
 
-== Contact us
+## Contact us
 
-If you experience any issues, please file a bug report at:
-  http://wonsysos.16bugs.com/
+[boonedocks.net](http://boonedocks.net)
+
+
+@boonedocks on Twitter
