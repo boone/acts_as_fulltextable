@@ -7,7 +7,7 @@ It allows you to create an auxiliary to be used for full-text searches.
 It behaves like a polymorphic association, so it can be used with any
 ActiveRecord model.
 
-This plugin is compatible with MySQL only.
+_This plugin is compatible with MySQL only._
 
 The code is based on the original acts_as_fulltextable plugin: http://code.google.com/p/wonsys/
 
@@ -22,7 +22,7 @@ Install the plugin: `script/plugin install https://boone@github.com/boone/acts_a
 Add the following code to the model that should be included in searches:
 
 ```ruby
-    acts_as_fulltextable :fields, :to, :include, :in, :index
+acts_as_fulltextable :fields, :to, :include, :in, :index
 ```
 
 
@@ -38,13 +38,13 @@ Then execute it: `rake db:migrate`
 You can either run a search on a single model:
 
 ```ruby
-  Model.find_fulltext('query to run', :limit => 10, :offset => 0)
+Model.find_fulltext('query to run', :limit => 10, :offset => 0)
 ```
 
 Or you can run it on more models at once:
 
 ```ruby
-  FulltextRow.search('query to run', :only => [:only, :this, :models], :limit => 10, :offset => 0)
+FulltextRow.search('query to run', :only => [:only, :this, :models], :limit => 10, :offset => 0)
 ```
 
 ## Warning
@@ -53,7 +53,7 @@ Should you add acts_as_fulltextable to a new model after the initial migration w
 you should execute the following piece of code (a migration or script/console are both fine):
   
 ```ruby
-    NewModel.find(:all).each {|i| i.create_fulltext_record}
+NewModel.find(:all).each {|i| i.create_fulltext_record}
 ```
 
 It will add all of the model's instances to the index.
